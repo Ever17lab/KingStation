@@ -1,0 +1,97 @@
+BUILD_FOR_PCSX2   = 0
+DEBUG             = 0
+MUTE_WARNINGS     = 1
+PS2_IP = 192.168.1.150
+
+TARGET = raboot-debug.elf
+TARGET_RELEASE = raboot.elf
+
+# Compile the IRXs first
+IRX_DIR = ps2/irx
+
+ifeq ($(DEBUG), 1)
+   OPTIMIZE_LV	:= -O0 -g
+	KINGSN_DEFINES += -DDEBUG
+else
+   OPTIMIZE_LV	:= -O3
+	LDFLAGS :=  -s
+endif
+
+ifeq ($(MUTE_WARNINGS), 1)
+   DISABLE_WARNINGS := -Wno-sign-compare -Wno-unused -Wno-parentheses
+endif
+
+INCDIR = -Ilibks-common/include
+INCDIR += -Ips2/include
+CFLAGS = $(OPTIMIZE_LV) $(DISABLE_WARNINGS) -ffast-math -fsingle-precision-constant
+ASFLAGS = $(CFLAGS)
+
+KINGSN_DEFINES += -DPS2 -DIS_SALAMANDER -DKINGSN_CONSOLE
+
+LIBDIR =
+LDFLAGS =
+LIBS = -lelf-loader -lpatches
+
+ifeq ($(BUILD_FOR_PCSX2), 1)
+KINGSN_DEFINES += -DBUILD_FOR_PCSX2
+endif
+
+CFLAGS += $(KINGSN_DEFINES)
+
+EE_OBJS = frontend/frontend_salamander.o \
+		 frontend/frontend_driver.o \
+		 frontend/drivers/platform_ps2.o \
+		 libks-common/file/file_path.o \
+		 libks-common/file/file_path_io.o \
+		 libks-common/string/stdstring.o \
+		 libks-common/lists/string_list.o \
+		 libks-common/lists/dir_list.o \
+		 libks-common/file/ks_dirent.o \
+		 libks-common/encodings/encoding_utf.o \
+		 libks-common/compat/fopen_utf8.o \
+		 libks-common/compat/compat_strl.o \
+		 libks-common/compat/compat_strcasestr.o \
+		 libks-common/file/config_file.o \
+		 libks-common/streams/file_stream.o \
+		 libks-common/vfs/vfs_implementation.o \
+		 libks-common/hash/lrc_hash.o \
+		 libks-common/time/rtime.o \
+		 verbosity.o \
+		 ps2/compat_files/ps2_devices.o 
+
+# Needed IRX objects
+EE_OBJS += $(IRX_DIR)/sio2man_irx.o $ $(IRX_DIR)/iomanX_irx.o $(IRX_DIR)/fileXio_irx.o 
+EE_OBJS += $(IRX_DIR)/mcman_irx.o $(IRX_DIR)/mcserv_irx.o $(IRX_DIR)/usbd_irx.o $(IRX_DIR)/usbhdfsd_irx.o
+EE_OBJS += $(IRX_DIR)/cdfs_irx.o
+
+EE_CFLAGS = $(CFLAGS)
+EE_CXXFLAGS = $(CFLAGS)
+EE_LDFLAGS = $(LDFLAGS)
+EE_LIBS = $(LIBS)
+EE_ASFLAGS = $(ASFLAGS)
+EE_INCS = $(INCDIR)
+EE_BIN = $(TARGET)
+EE_GPVAL = $(GPVAL)
+
+all: irxdir $(EE_BIN)
+
+irxdir:
+	$(MAKE) -C $(IRX_DIR)
+
+clean:
+	rm -f $(EE_BIN) $(EE_OBJS)
+	$(MAKE) -C $(IRX_DIR) clean
+
+debug: clean all run
+
+run:
+	ps2client -h $(PS2_IP) execee host:$(EE_BIN)
+
+package:
+	ps2-packer $(EE_BIN) $(TARGET_RELEASE)
+
+release: clean all package
+
+#Include preferences
+include $(PS2SDK)/samples/Makefile.pref
+include $(PS2SDK)/samples/Makefile.eeglobal_cpp

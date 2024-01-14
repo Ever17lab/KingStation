@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<qnx xmlns="http://www.qnx.com/schemas/application/1.0">
+
+    <id>com.KingStation</id>
+    <versionNumber>0.1</versionNumber>
+    <buildId>3</buildId>
+    <description>Cross-platform entertainment system</description>
+    <author>Team Libks</author>
+    <initialWindow>
+        <autoOrients>true</autoOrients>
+        <systemChrome>none</systemChrome>
+    </initialWindow>
+    <name>KingStation</name>
+    <icon>
+       <image>KingStation-96x96.png</image>
+    </icon>
+    <splashScreens>
+       <image>canvas.png</image>
+    </splashScreens>
+    <category>core.games</category>
+    <asset path="${workspace_loc:/KingStation_/media/assets}">assets/assets</asset>
+    <asset path="${workspace_loc:/KingStation_/media/overlays}">assets/overlays</asset>
+    <asset path="../../../dist/info">assets/info</asset>
+    <asset path="cores">assets/cores</asset>
+    <asset path="${workspace_loc:/KingStation_/media/KingStation-96x96.png}">KingStation-96x96.png</asset>
+    <asset path="${workspace_loc:/KingStation_/media/canvas.png}">canvas.png</asset>
+    <configuration name="ES2-Debug">
+       <platformArchitecture>armle-v7</platformArchitecture>
+       <asset path="ES2-Debug/KingStation" entry="true" type="Qnx/Elf">KingStation</asset>
+    </configuration>
+    <configuration name="ES3-Debug">
+       <platformArchitecture>armle-v7</platformArchitecture>
+       <asset path="ES3-Debug/KingStation" entry="true" type="Qnx/Elf">KingStation</asset>
+    </configuration>
+    <configuration name="ES2-Release">
+       <platformArchitecture>armle-v7</platformArchitecture>
+       <asset path="ES2-Release/KingStation" entry="true" type="Qnx/Elf">KingStation</asset>
+    </configuration>
+    <configuration name="ES3-Release">
+       <platformArchitecture>armle-v7</platformArchitecture>
+       <asset path="ES3-Release/KingStation" entry="true" type="Qnx/Elf">KingStation</asset>
+    </configuration>
+
+
+    <permission>use_gamepad</permission>
+    <permission>access_shared</permission>
+    <permission>access_internet</permission>
+
+    <!-- Ensure that shared libraries in the package are found at run-time. -->
+    <env var="LD_LIBRARY_PATH" value="app/native/lib"/>
+
+</qnx>

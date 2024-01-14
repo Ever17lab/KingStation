@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PXML xmlns="http://openpandora.org/namespaces/PXML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="PXML_schema.xsd">
+<!-- please see http://pandorawiki.org/PXML_specification for more information before editing, and remember the order does matter -->
+
+
+
+  <package id="KingStation.lifning.001">
+
+    <author name="lifning" website="http://libks.org/"/>
+
+    <version major="0" minor="9" release="7" build="2" type="beta"/>
+
+    <titles>
+      <title lang="en_US">KingStation</title>
+    </titles>
+
+    <descriptions>
+      <description lang="en_US">KingStation is a modular multi-system emulator system that is designed to be fast, lightweight, and portable.</description>
+    </descriptions>
+
+    <icon src="icon.png"/>
+
+  </package>
+
+
+
+  <application id="KingStation.lifning.001" appdata="KingStation">
+
+    <exec command="scripts/KingStation.sh"/>
+
+    <author name="Libks" website="https://www.KingStation.com"/>
+
+    <version major="0" minor="9" release="7" build="1"/>
+    <osversion major="1" minor="0" release="0" build="0"/>
+
+    <titles>
+      <title lang="en_US">KingStation</title>
+    </titles>
+    <!-- pre HF6 compatibility: -->
+    <title lang="en_US">KingStation</title>
+
+    <descriptions>
+      <description lang="en_US">Frontend to libks</description>
+    </descriptions>
+    <!-- pre HF6 compatibility: -->
+    <description lang="en_US">Frontend to libks</description>
+
+    <icon src="icon.png"/>
+
+    <previewpics>
+      <pic src="previews/KingStation.png"/>
+    </previewpics>
+
+    <info name="KingStation documentation" type="text/html" src="/mnt/utmp/KingStation/readme.html"/>
+
+    <categories>
+      <!-- http://standards.freedesktop.org/menu-spec/latest/apa.html -->
+      <category name="Game">
+        <subcategory name="Emulator"/>
+      </category>
+    </categories>
+  </application>
+
+
+
+  <application id="KingStation.lifning.002" appdata="KingStation">
+
+    <exec command="scripts/KingStation-phoenix.sh"/>
+  
+    <author name="Libks" website="https://www.KingStation.com"/>
+
+    <version major="0" minor="9" release="7" build="1"/>
+    <osversion major="1" minor="0" release="0" build="0"/>
+
+    <titles>
+      <title lang="en_US">KingStation-Phoenix</title>
+    </titles>
+    <!-- pre HF6 compatibility: -->
+    <title lang="en_US">KingStation-Phoenix</title>
+
+    <descriptions>
+      <description lang="en_US">Frontend to frontend to libks</description>
+    </descriptions>
+    <!-- pre HF6 compatibility: -->
+    <description lang="en_US">Frontend to frontend to libks</description>
+
+    <icon src="icon.png"/>
+
+    <previewpics>
+      <pic src="previews/KingStation-phoenix.png"/>
+    </previewpics>
+
+    <categories>
+      <!-- http://standards.freedesktop.org/menu-spec/latest/apa.html -->
+      <category name="Game">
+        <subcategory name="Emulator"/>
+      </category>
+    </categories>
+
+  </application>
+
+
+
+</PXML>

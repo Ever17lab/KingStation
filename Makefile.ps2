@@ -1,0 +1,101 @@
+BUILD_FOR_PCSX2    = 0
+DEBUG              = 0
+HAVE_THREADS       = 0
+MUTE_WARNINGS      = 1
+PS2_IP = 192.168.1.10
+
+TARGET = KingStationps2-debug.elf
+TARGET_RELEASE = KingStationps2.elf
+
+# Compile the IRXs first
+IRX_DIR = ps2/irx
+
+ifeq ($(DEBUG), 1)
+   OPTIMIZE_LV	:= -O0 -g
+	KINGSN_DEFINES += -DDEBUG
+else
+   OPTIMIZE_LV	:= -O3
+	LDFLAGS :=  -s
+endif
+
+ifeq ($(MUTE_WARNINGS), 1)
+   DISABLE_WARNINGS := -Wno-unused -Wno-format -Wno-format-truncation
+endif
+
+INCDIR = -I$(PS2DEV)/gsKit/include -I$(PS2SDK)/ports/include
+INCDIR += -Ips2/include -Ilibks-common/include -Ideps -Ideps/stb -Ideps/7zip
+INCDIR += -Ideps/pthreads -Ideps/pthreads/platform/ps2 -Ideps/pthreads/platform/helper
+CFLAGS = $(OPTIMIZE_LV) $(DISABLE_WARNINGS) -ffast-math -fsingle-precision-constant
+ASFLAGS = $(CFLAGS)
+
+KINGSN_DEFINES += -DPS2 -DHAVE_GRIFFIN=1 -DKINGSN_INTERNAL -DHAVE_SCREENSHOTS -DHAVE_REWIND -DKINGSN_CONSOLE -DHAVE_MENU -DHAVE_CONFIGFILE -DHAVE_PATCH -DHAVE_CHEATS -DHAVE_RGUI
+KINGSN_DEFINES += -DHAVE_ZLIB -DHAVE_NO_BUILTINZLIB -DHAVE_RPNG -DHAVE_RJPEG -DHAVE_FILTERS_BUILTIN -DHAVE_7ZIP -DHAVE_CC_RESAMPLER -DHAVE_AUDIOMIXER
+KINGSN_DEFINES += -DHAVE_DSP_FILTER
+KINGSN_DEFINES += -DHAVE_VIDEO_FILTER
+
+LDFLAGS += -L$(PS2DEV)/gsKit/lib -L$(PS2SDK)/ports/lib -L.
+# Lib cdvd is needed to get proper time
+LIBS += -lks_ps2 -lpatches -lgskit -ldmakit -laudsrv -lmtap -lpadx -lz -lcdvd -lelf-loader
+
+ifeq ($(BUILD_FOR_PCSX2), 1)
+KINGSN_DEFINES += -DBUILD_FOR_PCSX2
+endif
+
+ifeq ($(HAVE_THREADS), 1)
+KINGSN_DEFINES += -DHAVE_THREADS
+endif
+
+CFLAGS += $(KINGSN_DEFINES)
+
+# All the IRX objects
+EE_OBJS += $(IRX_DIR)/sio2man_irx.o $ $(IRX_DIR)/iomanX_irx.o $(IRX_DIR)/fileXio_irx.o
+EE_OBJS += $(IRX_DIR)/mcman_irx.o $(IRX_DIR)/mcserv_irx.o
+EE_OBJS += $(IRX_DIR)/usbd_irx.o $(IRX_DIR)/usbhdfsd_irx.o
+EE_OBJS += $(IRX_DIR)/libsd_irx.o $(IRX_DIR)/audsrv_irx.o
+EE_OBJS += $(IRX_DIR)/cdfs_irx.o
+EE_OBJS += $(IRX_DIR)/mtapman_irx.o $(IRX_DIR)/padman_irx.o
+
+# Missing objecst on the PS2SDK
+EE_OBJS += ps2/compat_files/ps2_devices.o
+
+EE_OBJS += griffin/griffin.o
+
+EE_CFLAGS = $(CFLAGS)
+EE_CXXFLAGS = $(CFLAGS)
+EE_LDFLAGS = $(LDFLAGS)
+EE_LIBS = $(LIBS)
+EE_ASFLAGS = $(ASFLAGS)
+EE_INCS = $(INCDIR)
+EE_BIN = $(TARGET)
+EE_GPVAL = $(GPVAL)
+
+
+all: irxdir $(EE_BIN)
+
+irxdir:
+	$(MAKE) -C $(IRX_DIR)
+
+clean:
+	rm -f $(EE_BIN) $(EE_OBJS)
+	$(MAKE) -C $(IRX_DIR) clean
+
+prepare:
+	ps2client -h $(PS2_IP) reset
+	ps2client -h $(PS2_IP) netdump
+
+run:
+	ps2client -h $(PS2_IP) execee host:$(EE_BIN)
+
+sim:
+	PCSX2 --elf=$(PWD)/$(EE_BIN) --nogui
+
+debug: clean all run
+
+package:
+	ps2-packer $(EE_BIN) $(TARGET_RELEASE)
+
+release: clean all package
+
+#Include preferences
+include $(PS2SDK)/samples/Makefile.pref
+include $(PS2SDK)/samples/Makefile.eeglobal_cpp

@@ -1,0 +1,9 @@
+Package: com.libks.KingStation
+Name: KingStation
+Depends: 
+Version: 0.0.1
+Architecture: iphoneos-arm
+Description: An awesome application!
+Maintainer: Libks
+Author: Libks
+Section: Utilities

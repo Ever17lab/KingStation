@@ -1,0 +1,13 @@
+usr/bin
+etc
+usr/lib/libks
+usr/lib/KingStation/filters/video
+usr/lib/KingStation/filters/audio
+usr/share/applications
+usr/share/libks/assets
+usr/share/libks/autoconfig
+usr/share/libks/cheats
+usr/share/libks/info
+usr/share/libks/overlays
+usr/share/libks/shaders
+usr/share/pixmaps

@@ -1,0 +1,4 @@
+# Ignore compiled binaries.
+/c_converter
+/libksdb_tool
+/rmsgpack_test

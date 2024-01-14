@@ -1,0 +1,54 @@
+# Before using this Makefile, be sure to do:
+# $ source /usr/local/angstrom/arm/environment-setup
+# $ setprj KingStation
+
+PNDDIR=./pkg/pandora
+BINDIR=$(PNDDIR)/bin
+
+all: $(BINDIR)/KingStation
+	mkdir -p $(PNDDIR)/lib
+	@echo "Put libks-*.so files in $(PNDDIR)/lib/ before making pnd!"
+
+pnd: KingStation.pnd
+
+install: all $(BINDIR)/KingStation-joyconfig $(BINDIR)/KingStation-zip $(PNDDIR)/readme.html
+
+KingStation:
+	./configure --prefix=$PND_BASEDIR/$PRJ --disable-ffmpeg --disable-cg --disable-python --disable-libpng --disable-pulse --disable-jack --enable-gles --enable-xml
+	make -f Makefile
+
+$(BINDIR)/KingStation: KingStation
+	mkdir -p $(BINDIR)
+	cp KingStation $(BINDIR)/KingStation
+
+$(BINDIR)/KingStation-joyconfig: tools/KingStation-joyconfig
+	mkdir -p $(BINDIR)
+	cp tools/KingStation-joyconfig $(BINDIR)/KingStation-joyconfig
+
+$(BINDIR)/KingStation-zip: KingStation-zip
+	mkdir -p $(BINDIR)
+	cp KingStation-zip $(BINDIR)/KingStation-zip
+
+$(PNDDIR)/readme.html: README.md
+	markdown README.md > $(PNDDIR)/readme.html
+
+KingStation.pnd: install
+	pnd_make -c -p KingStation.pnd -d $(PNDDIR)/ -x $(PNDDIR)/PXML.xml -i $(PNDDIR)/icon.png
+
+clean:
+	rm -f *.o
+	rm -f audio/*.o
+	rm -f conf/*.o
+	rm -f gfx/*.o
+	rm -f gfx/drivers_font/*.o
+	rm -f gfx/drivers_font_renderer/*.o
+	rm -f gfx/drivers_context/*.o
+	rm -f gfx/py_state/*.o
+	rm -f compat/*.o
+	rm -f record/*.o
+	rm -f input/*.o
+	rm -f tools/*.o
+	rm -f $(BINDIR)/KingStation
+	rm -f $(BINDIR)/KingStation-joyconfig
+	rm -f $(PNDDIR)/readme.html
+	rm -f KingStation

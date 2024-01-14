@@ -1,0 +1,21 @@
+image_core.so: image_core.c
+	gcc \
+		-g \
+		-DHAVE_STB_IMAGE \
+		image_core.c \
+		-I../../libks-common/include/ \
+		-I../../deps/stb/ \
+		../../libks-common/compat/compat_strcasestr.c \
+		../../libks-common/compat/compat_strl.c \
+		../../libks-common/file/file_path.c \
+		../../libks-common/file/file_path_io.c \
+		../../libks-common/file/ks_dirent.c \
+		../../libks-common/lists/dir_list.c \
+		../../libks-common/lists/string_list.c \
+		../../libks-common/streams/file_stream.c \
+		../../libks-common/vfs/vfs_implementation.c \
+		-shared \
+		-fPIC \
+		-Wl,--no-undefined \
+		-lm \
+		-o image_core.so

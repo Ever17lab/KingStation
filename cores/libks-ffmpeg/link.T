@@ -1,0 +1,4 @@
+{
+   global: ks_*;
+   local: *;
+};

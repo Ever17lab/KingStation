@@ -1,0 +1,52 @@
+BUILD_PRX         = 0
+PSP_LARGE_MEMORY  = 1
+DEBUG             = 0
+
+TARGET = KingStationpsp_salamander
+
+ifeq ($(DEBUG), 1)
+   OPTIMIZE_LV	:= -O0 -g
+else
+   OPTIMIZE_LV	:= -O2
+endif
+
+INCDIR = $(PSPPATH)/include libks-common/include
+CFLAGS = $(OPTIMIZE_LV) -G0 -std=gnu99 -ffast-math
+ASFLAGS = $(CFLAGS)
+
+KINGSN_DEFINES = -DPSP -DIS_SALAMANDER -DKINGSN_CONSOLE
+
+LIBDIR =
+LDFLAGS =
+LIBS = -lstdc++ -lm -lpsppower
+
+CFLAGS += $(KINGSN_DEFINES)
+
+EXTRA_TARGETS   = EBOOT.PBP
+PSP_EBOOT_TITLE = KingStation
+PSP_EBOOT_ICON  = pkg/psp1/ICON0.PNG
+PSP_EBOOT_PIC1  = pkg/psp1/PIC1.PNG
+
+OBJS = frontend/frontend_salamander.o \
+		 frontend/frontend_driver.o \
+		 frontend/drivers/platform_psp.o \
+		 libks-common/file/file_path.o \
+		 libks-common/file/file_path_io.o \
+		 libks-common/string/stdstring.o \
+		 libks-common/lists/string_list.o \
+		 libks-common/lists/dir_list.o \
+		 libks-common/file/ks_dirent.o \
+		 libks-common/encodings/encoding_utf.o \
+		 libks-common/compat/fopen_utf8.o \
+		 libks-common/compat/compat_strl.o \
+		 libks-common/compat/compat_strcasestr.o \
+		 libks-common/file/config_file.o \
+		 libks-common/streams/file_stream.o \
+		 libks-common/vfs/vfs_implementation.o \
+		 libks-common/hash/lrc_hash.o \
+		 libks-common/time/rtime.o \
+		 verbosity.o \
+		 bootstrap/psp1/kernel_functions.o
+
+PSPSDK=$(shell psp-config --pspsdk-path)
+include $(PSPSDK)/lib/build.mak
