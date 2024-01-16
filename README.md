@@ -1,2 +1,2 @@
 # KingStation
-Cool player with oldschol expirience
+Cool player with oldschool experience
