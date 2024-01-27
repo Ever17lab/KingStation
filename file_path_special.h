@@ -65,8 +65,6 @@ KS_BEGIN_DECLS
 #define FILE_PATH_BPS_EXTENSION ".bps"
 #define FILE_PATH_RDB_EXTENSION ".rdb"
 #define FILE_PATH_RDB_EXTENSION_NO_DOT "rdb"
-#define FILE_PATH_ZIP_EXTENSION ".zip"
-#define FILE_PATH_7Z_EXTENSION ".7z"
 #define FILE_PATH_INDEX_URL ".index"
 #define FILE_PATH_INDEX_DIRS_URL ".index-dirs"
 #define FILE_PATH_INDEX_EXTENDED_URL ".index-extended"

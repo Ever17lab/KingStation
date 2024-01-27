@@ -1664,7 +1664,9 @@ static void frontend_unix_get_env(int *argc,
             fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_CORE_ASSETS],
                   parent_path, "Bean",
                   sizeof(g_defaults.dirs[DEFAULT_DIR_CORE_ASSETS]));
-
+            fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_MENU_CONTENT],
+                  parent_path, "Bean",
+                  sizeof(g_defaults.dirs[DEFAULT_DIR_MENU_CONTENT]));
             fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_LOGS],
                   parent_path, "System/Logs",
                   sizeof(g_defaults.dirs[DEFAULT_DIR_LOGS]));
@@ -1796,24 +1798,6 @@ static void frontend_unix_get_env(int *argc,
 #endif
    fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_AUTOCONFIG], base_path,
          "System/Autoconfig", sizeof(g_defaults.dirs[DEFAULT_DIR_AUTOCONFIG]));
-
-   if (path_is_directory("/usr/local/share/KingStation/assets"))
-      fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_ASSETS],
-            "/usr/local/share/KingStation",
-            "System/Assets", sizeof(g_defaults.dirs[DEFAULT_DIR_ASSETS]));
-   else if (path_is_directory("/usr/share/KingStation/assets"))
-      fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_ASSETS],
-            "/usr/share/KingStation",
-            "System/Assets", sizeof(g_defaults.dirs[DEFAULT_DIR_ASSETS]));
-   else if (path_is_directory("/usr/local/share/games/KingStation/assets"))
-      fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_ASSETS],
-            "/usr/local/share/games/KingStation",
-            "System/Assets", sizeof(g_defaults.dirs[DEFAULT_DIR_ASSETS]));
-   else if (path_is_directory("/usr/share/games/KingStation/assets"))
-      fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_ASSETS],
-            "/usr/share/games/KingStation",
-            "System/Assets", sizeof(g_defaults.dirs[DEFAULT_DIR_ASSETS]));
-   else
       fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_ASSETS], base_path,
             "System/Assets", sizeof(g_defaults.dirs[DEFAULT_DIR_ASSETS]));
 #if defined(DINGUX)
@@ -1822,43 +1806,8 @@ static void frontend_unix_get_env(int *argc,
    fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_VIDEO_FILTER], base_path,
          "System/Filters/Video", sizeof(g_defaults.dirs[DEFAULT_DIR_VIDEO_FILTER]));
 #else
-   if (path_is_directory("/usr/local/share/KingStation/Filters/Audio"))
-      fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_AUDIO_FILTER],
-            "/usr/local/share/KingStation",
-            "System/Filters/Audio", sizeof(g_defaults.dirs[DEFAULT_DIR_AUDIO_FILTER]));
-   else if (path_is_directory("/usr/share/KingStation/filters/audio"))
-      fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_AUDIO_FILTER],
-            "/usr/share/KingStation",
-            "System/Filters/Audio", sizeof(g_defaults.dirs[DEFAULT_DIR_AUDIO_FILTER]));
-   else if (path_is_directory("/usr/local/share/games/KingStation/Filters/Audio"))
-      fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_AUDIO_FILTER],
-            "/usr/local/share/games/KingStation",
-            "System/Filters/Audio", sizeof(g_defaults.dirs[DEFAULT_DIR_AUDIO_FILTER]));
-   else if (path_is_directory("/usr/share/games/KingStation/filters/audio"))
-      fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_AUDIO_FILTER],
-            "/usr/share/games/KingStation",
-            "System/Filters/Audio", sizeof(g_defaults.dirs[DEFAULT_DIR_AUDIO_FILTER]));
-   else
       fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_AUDIO_FILTER], base_path,
             "System/Filters/Audio", sizeof(g_defaults.dirs[DEFAULT_DIR_AUDIO_FILTER]));
-
-   if (path_is_directory("/usr/local/share/KingStation/Filters/Video"))
-      fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_VIDEO_FILTER],
-            "/usr/local/share/KingStation",
-            "System/Filters/Video", sizeof(g_defaults.dirs[DEFAULT_DIR_VIDEO_FILTER]));
-   else if (path_is_directory("/usr/share/KingStation/filters/video"))
-      fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_VIDEO_FILTER],
-            "/usr/share/KingStation",
-            "System/Filters/Video", sizeof(g_defaults.dirs[DEFAULT_DIR_VIDEO_FILTER]));
-   else if (path_is_directory("/usr/local/share/games/KingStation/filters/video"))
-      fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_VIDEO_FILTER],
-            "/usr/local/share/games/KingStation",
-            "System/Filters/Video", sizeof(g_defaults.dirs[DEFAULT_DIR_VIDEO_FILTER]));
-   else if (path_is_directory("/usr/share/games/KingStation/filters/video"))
-      fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_VIDEO_FILTER],
-            "/usr/share/games/KingStation",
-            "System/Filters/Video", sizeof(g_defaults.dirs[DEFAULT_DIR_VIDEO_FILTER]));
-   else
       fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_VIDEO_FILTER], base_path,
             "System/Filters/Video", sizeof(g_defaults.dirs[DEFAULT_DIR_VIDEO_FILTER]));
 #endif
@@ -1888,9 +1837,11 @@ static void frontend_unix_get_env(int *argc,
          "System/Layouts", sizeof(g_defaults.dirs[DEFAULT_DIR_VIDEO_LAYOUT]));
 #endif
    fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_CORE_ASSETS], base_path,
-         "System/Bean", sizeof(g_defaults.dirs[DEFAULT_DIR_CORE_ASSETS]));
+         "Bean", sizeof(g_defaults.dirs[DEFAULT_DIR_CORE_ASSETS]));
+   fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_MENU_CONTENT], base_path,
+         "Bean", sizeof(g_defaults.dirs[DEFAULT_DIR_MENU_CONTENT]));
    fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_SCREENSHOT], base_path,
-         "System/Screenshots", sizeof(g_defaults.dirs[DEFAULT_DIR_SCREENSHOT]));
+         "Screenshots", sizeof(g_defaults.dirs[DEFAULT_DIR_SCREENSHOT]));
    fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_THUMBNAILS], base_path,
          "System/Thumbnails", sizeof(g_defaults.dirs[DEFAULT_DIR_THUMBNAILS]));
    fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_SRAM], base_path,

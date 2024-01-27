@@ -216,10 +216,6 @@ bool path_is_compressed_file(const char* path)
    if (string_is_empty(ext))
       return false;
 
-   if (string_is_equal_noncase(ext, "zip") ||
-       string_is_equal_noncase(ext, "apk") ||
-       string_is_equal_noncase(ext, "7z"))
-      return true;
 
    return false;
 }

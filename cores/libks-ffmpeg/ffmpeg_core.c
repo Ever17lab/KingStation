@@ -553,16 +553,6 @@ static void seek_frame(int seek_frames)
    do_seek        = true;
    seek_time      = frame_cnt / media.interpolate_fps;
 
-   /* Convert seek time to a printable format */
-   seek_seconds  = (unsigned)seek_time;
-   seek_minutes  = seek_seconds / 60;
-   seek_seconds %= 60;
-   seek_hours    = seek_minutes / 60;
-   seek_minutes %= 60;
-
-   snprintf(msg, sizeof(msg), "%02d:%02d:%02d / %02d:%02d:%02d",
-         seek_hours, seek_minutes, seek_seconds,
-         media.duration.hours, media.duration.minutes, media.duration.seconds);
 
    /* Get current progress */
    if (media.duration.time > 0.0)
@@ -574,7 +564,7 @@ static void seek_frame(int seek_frames)
 
    /* Send message to frontend */
    msg_obj.msg      = msg;
-   msg_obj.duration = 2000;
+   msg_obj.duration = 1000;
    msg_obj.priority = 3;
    msg_obj.level    = KS_LOG_INFO;
    msg_obj.target   = KS_MESSAGE_TARGET_OSD;
@@ -657,10 +647,7 @@ void CORE_PREFIX(ks_run)(void)
             ret |= (1 << i);
    }
 
-   if (CORE_PREFIX(input_state_cb)(0, KS_DEVICE_MOUSE, 0, KS_DEVICE_ID_MOUSE_WHEELUP))
-      ret |= (1 << KS_DEVICE_ID_JOYPAD_UP);
-   if (CORE_PREFIX(input_state_cb)(0, KS_DEVICE_MOUSE, 0, KS_DEVICE_ID_MOUSE_WHEELDOWN))
-      ret |= (1 << KS_DEVICE_ID_JOYPAD_DOWN);
+
 
    left  = ret & (1 << KS_DEVICE_ID_JOYPAD_LEFT);
    right = ret & (1 << KS_DEVICE_ID_JOYPAD_RIGHT);
@@ -670,13 +657,13 @@ void CORE_PREFIX(ks_run)(void)
    r     = ret & (1 << KS_DEVICE_ID_JOYPAD_R);
 
    if (left && !last_left)
-      seek_frames -= 10 * media.interpolate_fps;
+      seek_frames -= 5 * media.interpolate_fps;
    if (right && !last_right)
-      seek_frames += 10 * media.interpolate_fps;
+      seek_frames += 5 * media.interpolate_fps;
    if (up && !last_up)
-      seek_frames += 60 * media.interpolate_fps;
+      seek_frames += 10 * media.interpolate_fps;
    if (down && !last_down)
-      seek_frames -= 60 * media.interpolate_fps;
+      seek_frames -= 10 * media.interpolate_fps;
 
    if (l && !last_l && audio_streams_num > 0)
    {
@@ -692,7 +679,7 @@ void CORE_PREFIX(ks_run)(void)
       snprintf(msg, sizeof(msg), "Audio Track #%d.", audio_streams_ptr);
 
       msg_obj.msg      = msg;
-      msg_obj.duration = 3000;
+      msg_obj.duration = 1000;
       msg_obj.priority = 1;
       msg_obj.level    = KS_LOG_INFO;
       msg_obj.target   = KS_MESSAGE_TARGET_ALL;
@@ -714,7 +701,7 @@ void CORE_PREFIX(ks_run)(void)
       snprintf(msg, sizeof(msg), "Subtitle Track #%d.", subtitle_streams_ptr);
 
       msg_obj.msg      = msg;
-      msg_obj.duration = 3000;
+      msg_obj.duration = 1000;
       msg_obj.priority = 1;
       msg_obj.level    = KS_LOG_INFO;
       msg_obj.target   = KS_MESSAGE_TARGET_ALL;
@@ -2133,10 +2120,10 @@ bool CORE_PREFIX(ks_load_game)(const struct ks_game_info *info)
    enum ks_pixel_format fmt = KS_PIXEL_FORMAT_XRGB8888;
 
    struct ks_input_descriptor desc[] = {
-      { 0, KS_DEVICE_JOYPAD, 0, KS_DEVICE_ID_JOYPAD_LEFT,  "Seek -10 seconds" },
-      { 0, KS_DEVICE_JOYPAD, 0, KS_DEVICE_ID_JOYPAD_UP,    "Seek +60 seconds" },
-      { 0, KS_DEVICE_JOYPAD, 0, KS_DEVICE_ID_JOYPAD_DOWN,  "Seek -60 seconds" },
-      { 0, KS_DEVICE_JOYPAD, 0, KS_DEVICE_ID_JOYPAD_RIGHT, "Seek +10 seconds" },
+      { 0, KS_DEVICE_JOYPAD, 0, KS_DEVICE_ID_JOYPAD_LEFT,  "Seek -5 seconds" },
+      { 0, KS_DEVICE_JOYPAD, 0, KS_DEVICE_ID_JOYPAD_UP,    "Seek +10 seconds" },
+      { 0, KS_DEVICE_JOYPAD, 0, KS_DEVICE_ID_JOYPAD_DOWN,  "Seek -10 seconds" },
+      { 0, KS_DEVICE_JOYPAD, 0, KS_DEVICE_ID_JOYPAD_RIGHT, "Seek +5 seconds" },
       { 0, KS_DEVICE_JOYPAD, 0, KS_DEVICE_ID_JOYPAD_L,     "Cycle Audio Track" },
       { 0, KS_DEVICE_JOYPAD, 0, KS_DEVICE_ID_JOYPAD_R, "Cycle Subtitle Track" },
 

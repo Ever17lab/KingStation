@@ -28572,7 +28572,7 @@ void audio_driver_load_system_sounds(void)
       task_push_audio_mixer_load(path_cancel, NULL, NULL, true, AUDIO_MIXER_SLOT_SELECTION_MANUAL, AUDIO_MIXER_SYSTEM_SLOT_CANCEL);
    if (path_notice && audio_enable_menu_notice)
       task_push_audio_mixer_load(path_notice, NULL, NULL, true, AUDIO_MIXER_SLOT_SELECTION_MANUAL, AUDIO_MIXER_SYSTEM_SLOT_NOTICE);
-   if (path_bgm && audio_enable_menu_bgm)
+   if (path_bgm && audio_enable_menu_bgm && p_kingsn->current_core_type == CORE_TYPE_DUMMY)
       task_push_audio_mixer_load(path_bgm, audio_driver_load_menu_bgm_callback, NULL, true, AUDIO_MIXER_SLOT_SELECTION_MANUAL, AUDIO_MIXER_SYSTEM_SLOT_BGM);
    if (path_cheevo_unlock && audio_enable_cheevo_unlock)
       task_push_audio_mixer_load(path_cheevo_unlock, NULL, NULL, true, AUDIO_MIXER_SLOT_SELECTION_MANUAL, AUDIO_MIXER_SYSTEM_SLOT_ACHIEVEMENT_UNLOCK);
